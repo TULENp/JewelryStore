@@ -1,8 +1,11 @@
 import React from 'react';
 import styles from './ItemCard.module.css';
+import { TItem } from '../../types/types';
 
 //* Display card with item data: id, name, price, brand
-export function ItemCard() {
+export function ItemCard({ data }: { data: TItem }) {
+    const { brand, id, name, price } = data;
+
     return (
         <div className={styles.cardContainer}>
             <div className={styles.propertySection}>
@@ -13,16 +16,16 @@ export function ItemCard() {
             </div>
             <div className={styles.contentSection}>
                 <p className={styles.content}>
-                    <span>1</span>
+                    <span>{id}</span>
                 </p>
                 <p className={styles.content}>
-                    <span>Часы</span>
+                    <span>{name}</span>
                 </p>
                 <p className={styles.content}>
-                    <span>99999</span> руб.
+                    <span>{price}</span> руб.
                 </p>
                 <p className={styles.content}>
-                    <span>Ролекс</span>
+                    <span>{brand}</span>
                 </p>
             </div>
         </div>
