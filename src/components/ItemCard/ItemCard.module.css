@@ -1,0 +1,33 @@
+.cardContainer {
+    display: flex;
+    border-radius: 8px;
+    max-width: 300px;
+    margin: 16px;
+    background-color: #f9f9f9;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.propertySection,
+.contentSection {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.property {
+    color: #555;
+}
+
+.content span {
+    font-weight: bold;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .cardContainer {
+        max-width: 100%;
+    }
+}
