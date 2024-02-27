@@ -35,11 +35,12 @@ export function MainPage() {
         setBrands(uniqueBrands);
     }
 
-    // get items ids depends on current page then by this ids find items
+    // get unique items ids depends on current page then by this ids find items
     async function getProducts() {
         setLoading(true);
         const res = await GetIds(currentPage);
-        const items = await GetItems(res);
+        const uniqueIds = Array.from(new Set<string>(res));
+        const items = await GetItems(uniqueIds);
         setStoreItems(items);
         setLoading(false);
     }

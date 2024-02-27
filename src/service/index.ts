@@ -40,7 +40,6 @@ export async function GetItems(ids: string[]) {
     });
 }
 
-
 // return item brands
 export async function GetBrands(): Promise<string[]> {
     return retryRequest(async () => {
@@ -65,7 +64,7 @@ export async function GetFilteredIds(itemField: Partial<Omit<TItem, 'id'>>) {
     });
 }
 
-// If request fails throw error message and retries request 
+// If request fails throw error message and retries request
 async function retryRequest<T>(
     requestFn: () => Promise<T>,
     maxRetries: number = 3,
@@ -78,7 +77,9 @@ async function retryRequest<T>(
             retries++;
             if (retries < maxRetries) {
                 console.log(
-                    `Идентификатор ошибки: ${error.response.status}. Повторная попытка... (${retries}/${maxRetries})`,
+                    `Идентификатор ошибки: ${
+                        (error as AxiosError)?.response?.status
+                    }. Повторная попытка... (${retries}/${maxRetries})`,
                 );
             } else {
                 throw error;
@@ -86,7 +87,7 @@ async function retryRequest<T>(
         }
     }
 
-    throw new Error('Достигнуто максимальное количество попыток'); 
+    throw new Error('Достигнуто максимальное количество попыток');
 }
 
 //* if '/filter' endpoint worked with offset and limit I would use this method instead of GetIds and GetFilteredIds
