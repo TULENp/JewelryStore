@@ -7,17 +7,17 @@ interface SearchBarProps {
 
 //* Display input and button "Find"
 export function SearchBar({ onSearch }: SearchBarProps) {
-    const [searchValue, setSearchValue] = useState<string>('');
+    const [searchValue, setSearchTerm] = useState<string>('');
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(event.target.value);
+        setSearchTerm(event.target.value);
     };
 
     const handleSearch = () => {
         onSearch(searchValue);
     };
 
-    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleSearch();
         }
@@ -26,10 +26,11 @@ export function SearchBar({ onSearch }: SearchBarProps) {
     return (
         <div className={styles.searchBar}>
             <input
+                className={styles.search}
                 type='text'
                 value={searchValue}
                 onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
+                onKeyDown={handleKeyDown}
             />
             <button onClick={handleSearch}>Найти</button>
         </div>

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ItemCard } from '../../components/ItemCard';
 import styles from './MainPage.module.css';
 import { TItem } from '../../types/types';
-import { GetItems, GetIds, GetFilteredIds } from '../../service';
+import { GetItems, GetIds, GetFilteredIds, GetBrands } from '../../service';
 import { Pagination } from '../../components/Pagination';
 import { SearchBar } from '../../components/SearchBar';
+import { BrandSelector } from '../../components/BrandSelector';
 
 //* Display search bar, filters, item cards list
 export function MainPage() {
@@ -12,6 +13,11 @@ export function MainPage() {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>('');
+    const [brands, setBrands] = useState<string[]>([]);
+
+    useEffect(() => {
+        getBrands();
+    }, []);
 
     useEffect(() => {
         if (searchValue !== '') {
@@ -20,6 +26,14 @@ export function MainPage() {
             getProducts();
         }
     }, [currentPage, searchValue]);
+
+    async function getBrands() {
+        const res = await GetBrands();
+        const uniqueBrands = Array.from(
+            new Set(res.filter((item) => item !== null)),
+        );
+        setBrands(uniqueBrands);
+    }
 
     async function getProducts() {
         setLoading(true);
@@ -54,28 +68,38 @@ export function MainPage() {
     }
 
     return (
-        <main className={styles.container}>
+        <main>
             <SearchBar onSearch={setSearchValue} />
+            <div className={styles.container}>
+                <BrandSelector brands={brands} />
+                <div className={styles.content}>
+                    <Pagination
+                        dec={decPage}
+                        inc={incPage}
+                        page={currentPage}
+                    />
 
-            <div className={styles.content}>
-                <Pagination dec={decPage} inc={incPage} page={currentPage} />
+                    {/* List of item cards */}
+                    <section className={styles.cardContainer}>
+                        {loading ? (
+                            <div className={styles.spinnerContainer}>
+                                <div className={styles.spinner}></div>
+                            </div>
+                        ) : storeItems.length ? (
+                            storeItems.map((item) => (
+                                <ItemCard data={item} key={item.id} />
+                            ))
+                        ) : (
+                            <h1>Ничего не найдено</h1>
+                        )}
+                    </section>
 
-                {/* List of item cards */}
-                <section className={styles.cardContainer}>
-                    {loading ? (
-                        <div className={styles.spinnerContainer}>
-                            <div className={styles.spinner}></div>
-                        </div>
-                    ) : storeItems.length ? (
-                        storeItems.map((item) => (
-                            <ItemCard data={item} key={item.id} />
-                        ))
-                    ) : (
-                        <h1>Ничего не найдено</h1>
-                    )}
-                </section>
-
-                <Pagination dec={decPage} inc={incPage} page={currentPage} />
+                    <Pagination
+                        dec={decPage}
+                        inc={incPage}
+                        page={currentPage}
+                    />
+                </div>
             </div>
         </main>
     );

@@ -1,12 +1,22 @@
 .searchBar {
     display: flex;
     margin: 16px;
+    width: 100%;
+    max-width: 500px;
 }
 
-input {
-    width: 500px;
+.search {
+    width: 100%;
     padding: 8px;
     margin-right: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+/* Стиль для экранов шириной меньше 600px (здесь вы можете выбрать нужное вам значение) */
+@media (max-width: 768px) {
+    .searchBar {
+        max-width: 100%;
+        /* Уберет ограничение максимальной ширины */
+    }
 }

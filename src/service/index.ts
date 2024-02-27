@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { md5 } from 'js-md5';
 
 import { BASE_URL, PAGE_SIZE, PASSWORD } from '../constants';
@@ -40,7 +40,7 @@ export async function GetItems(ids: string[]) {
 }
 
 // return item brands
-export async function GetBrands() {
+export async function GetBrands(): Promise<string[]> {
     return await axios
         .post('/', {
             action: 'get_fields',
@@ -51,14 +51,12 @@ export async function GetBrands() {
 }
 
 // return items ids filtered by name, brand, price
-export async function GetFilteredIds(itemFields: Partial<Omit<TItem, 'id'>>) {
+export async function GetFilteredIds(itemField: Partial<Omit<TItem, 'id'>>) {
     return await axios
         .post('/', {
             action: 'filter',
             params: {
-                ...itemFields,
-                offset: (1) * PAGE_SIZE,
-                limit: PAGE_SIZE,
+                ...itemField
             },
         })
         .then((response) => response.data.result)
