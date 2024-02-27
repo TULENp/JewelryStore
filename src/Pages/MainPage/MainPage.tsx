@@ -10,23 +10,22 @@ import { BrandSelector } from '../../components/BrandSelector';
 //* Display search bar, filters, item cards list
 export function MainPage() {
     const [storeItems, setStoreItems] = useState<TItem[]>([]);
+    const [brands, setBrands] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
-    const [searchValue, setSearchValue] = useState<string>('');
-    const [brands, setBrands] = useState<string[]>([]);
+
+    // const [searchValue, setSearchValue] = useState<string>('');
+    // const [selectedBrand, setSelectedBrand] = useState<string | null>();
 
     useEffect(() => {
         getBrands();
     }, []);
 
     useEffect(() => {
-        if (searchValue !== '') {
-            getFilteredProducts();
-        } else {
-            getProducts();
-        }
-    }, [currentPage, searchValue]);
+        getProducts();
+    }, [currentPage]);
 
+    // get brands, without nulls and duplicates
     async function getBrands() {
         const res = await GetBrands();
         const uniqueBrands = Array.from(
@@ -35,19 +34,10 @@ export function MainPage() {
         setBrands(uniqueBrands);
     }
 
+    // get items ids depends on current page then by this ids find items
     async function getProducts() {
         setLoading(true);
         const res = await GetIds(currentPage);
-        const items = await GetItems(res);
-        setStoreItems(items);
-        setLoading(false);
-    }
-
-    async function getFilteredProducts() {
-        setLoading(true);
-        const res = await GetFilteredIds({
-            product: searchValue,
-        });
         const items = await GetItems(res);
         setStoreItems(items);
         setLoading(false);
@@ -67,11 +57,38 @@ export function MainPage() {
         }
     }
 
+    async function FilterByProduct(searchValue: string) {
+        setLoading(true);
+        const res = await GetFilteredIds({
+            product: searchValue,
+        });
+        const items = await GetItems(res);
+        setStoreItems(items);
+        setLoading(false);
+    }
+
+    async function FilterByBrand(brandsValue: string | null) {
+        setLoading(true);
+        let res = [];
+        if (brandsValue) {
+            res = await GetFilteredIds({
+                brand: brandsValue,
+            });
+        } else {
+            res = await GetIds();
+        }
+        const items = await GetItems(res);
+        setStoreItems(items);
+        setLoading(false);
+    }
+
     return (
         <main>
-            <SearchBar onSearch={setSearchValue} />
+            <SearchBar onSearch={FilterByProduct} />
+
             <div className={styles.container}>
-                <BrandSelector brands={brands} />
+                <BrandSelector brands={brands} onSelect={FilterByBrand} />
+
                 <div className={styles.content}>
                     <Pagination
                         dec={decPage}

@@ -3,16 +3,16 @@ import styles from './BrandSelector.module.css';
 
 interface BrandSelectorProps {
     brands: string[];
-    // onSelect: (value: string) => void;
+    onSelect: (value: string | null) => void;
 }
 
 //* Display list of selectable brands
-export function BrandSelector({ brands }: BrandSelectorProps) {
+export function BrandSelector({ brands, onSelect }: BrandSelectorProps) {
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
     const handleBrandSelection = (brand: string) => {
         setSelectedBrand(brand === selectedBrand ? null : brand);
-        // onSelect(brand === selectedBrand ? null : brand);
+        onSelect(brand === selectedBrand ? null : brand);
     };
 
     return (
