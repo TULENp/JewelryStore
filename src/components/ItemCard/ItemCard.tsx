@@ -2,30 +2,33 @@ import React from 'react';
 import styles from './ItemCard.module.css';
 import { TItem } from '../../types/types';
 
-//* Display card with item data: id, name, price, brand
 export function ItemCard({ data }: { data: TItem }) {
-    const { brand, id, name, price } = data;
+    const { brand, id, product, price } = data;
 
     return (
         <div className={styles.cardContainer}>
-            <div className={styles.propertySection}>
+            <div className={styles.itemRow}>
                 <p className={styles.property}>ID:</p>
-                <p className={styles.property}>Название:</p>
-                <p className={styles.property}>Цена:</p>
-                <p className={styles.property}>Бренд:</p>
+                <p className={styles.content}>
+                    <span>{id || '-'}</span>
+                </p>
             </div>
-            <div className={styles.contentSection}>
+            <div className={styles.itemRow}>
+                <p className={styles.property}>Название:</p>
                 <p className={styles.content}>
-                    <span>{id}</span>
+                    <span>{product || '-'}</span>
                 </p>
+            </div>
+            <div className={styles.itemRow}>
+                <p className={styles.property}>Цена:</p>
                 <p className={styles.content}>
-                    <span>{name}</span>
+                    <span>{price || '-'}</span> руб.
                 </p>
+            </div>
+            <div className={styles.itemRow}>
+                <p className={styles.property}>Бренд:</p>
                 <p className={styles.content}>
-                    <span>{price}</span> руб.
-                </p>
-                <p className={styles.content}>
-                    <span>{brand}</span>
+                    <span>{brand || '-'}</span>
                 </p>
             </div>
         </div>

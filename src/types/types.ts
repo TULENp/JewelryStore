@@ -1,6 +1,6 @@
 export type TItem = {
     id: number;
-    name: string;
+    product: string;
     price: number;
     brand: string;
 };
