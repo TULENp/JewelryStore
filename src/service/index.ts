@@ -16,51 +16,77 @@ function generateAuthHeader() {
 
 // return items ids with pagination
 export async function GetIds(page: number = 1) {
-    return await axios
-        .post('/', {
+    return retryRequest(async () => {
+        const response = await axios.post('/', {
             action: 'get_ids',
             params: {
                 offset: (page - 1) * PAGE_SIZE,
                 limit: PAGE_SIZE,
             },
-        })
-        .then((response) => response.data.result)
-        .catch((error) => error);
+        });
+
+        return response.data.result;
+    });
 }
 
 // return items data by ids
 export async function GetItems(ids: string[]) {
-    return await axios
-        .post('/', {
+    return retryRequest(async () => {
+        const response = await axios.post('/', {
             action: 'get_items',
             params: { ids },
-        })
-        .then((response) => response.data.result)
-        .catch((error) => error);
+        });
+        return response.data.result;
+    });
 }
+
 
 // return item brands
 export async function GetBrands(): Promise<string[]> {
-    return await axios
-        .post('/', {
+    return retryRequest(async () => {
+        const response = await axios.post('/', {
             action: 'get_fields',
             params: { field: 'brand' },
-        })
-        .then((response) => response.data.result)
-        .catch((error) => error);
+        });
+        return response.data.result;
+    });
 }
 
-// return items ids filtered by name, brand, price
+// return items ids filtered by name OR brand OR price
 export async function GetFilteredIds(itemField: Partial<Omit<TItem, 'id'>>) {
-    return await axios
-        .post('/', {
+    return retryRequest(async () => {
+        const response = await axios.post('/', {
             action: 'filter',
             params: {
-                ...itemField
+                ...itemField,
             },
-        })
-        .then((response) => response.data.result)
-        .catch((error) => error);
+        });
+        return response.data.result;
+    });
+}
+
+// If request fails throw error message and retries request 
+async function retryRequest<T>(
+    requestFn: () => Promise<T>,
+    maxRetries: number = 3,
+): Promise<T> {
+    let retries = 0;
+    while (retries < maxRetries) {
+        try {
+            return await requestFn();
+        } catch (error) {
+            retries++;
+            if (retries < maxRetries) {
+                console.log(
+                    `Идентификатор ошибки: ${error.response.status}. Повторная попытка... (${retries}/${maxRetries})`,
+                );
+            } else {
+                throw error;
+            }
+        }
+    }
+
+    throw new Error('Достигнуто максимальное количество попыток'); 
 }
 
 //* if '/filter' endpoint worked with offset and limit I would use this method instead of GetIds and GetFilteredIds
