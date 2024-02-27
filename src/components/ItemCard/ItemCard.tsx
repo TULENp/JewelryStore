@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ItemCard.module.css';
 import { TItem } from '../../types/types';
 
