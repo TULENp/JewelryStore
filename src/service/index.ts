@@ -57,6 +57,8 @@ export async function GetFilteredIds(itemFields: Partial<Omit<TItem, 'id'>>) {
             action: 'filter',
             params: {
                 ...itemFields,
+                offset: (1) * PAGE_SIZE,
+                limit: PAGE_SIZE,
             },
         })
         .then((response) => response.data.result)

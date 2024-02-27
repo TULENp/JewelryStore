@@ -1,10 +1,10 @@
 .cardContainer {
     border-radius: 8px;
     width: 100%;
-    max-width: 400px;
-    min-width: 400px;
+    max-width:400px;
+    min-width:400px;
     margin: 16px;
-    padding: 4px 16px;
+    padding: 2px 8px;
     background-color: #f9f9f9;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -12,7 +12,9 @@
 .itemRow {
     display: grid;
     grid-template-columns: 1fr 3fr;
+    gap: 16px;
     align-items: center;
+    margin: 8px;
 }
 
 .property {
@@ -22,11 +24,4 @@
 .content span {
     font-weight: bold;
     color: #333;
-}
-
-@media (max-width: 768px) {
-    .cardContainer {
-        max-width: 100%;
-        min-width: min-content;
-    }
 }

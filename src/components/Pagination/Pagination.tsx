@@ -13,7 +13,7 @@ export function Pagination({ dec, inc, page }: PaginationProps) {
                 {'<'}
             </button>
             <p>{page}</p>
-            <button onClick={inc} disabled={page >= 10}>
+            <button onClick={inc} disabled={page >= 100}>
                 {'>'}
             </button>
         </div>

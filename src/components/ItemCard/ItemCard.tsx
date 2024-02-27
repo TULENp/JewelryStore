@@ -22,7 +22,7 @@ export function ItemCard({ data }: { data: TItem }) {
             <div className={styles.itemRow}>
                 <p className={styles.property}>Цена:</p>
                 <p className={styles.content}>
-                    <span>{price || '-'}</span> руб.
+                    <span>{price || '-'}</span>
                 </p>
             </div>
             <div className={styles.itemRow}>
