@@ -6,6 +6,7 @@ import { GetItems, GetIds, GetFilteredIds, GetBrands } from '../../service';
 import { Pagination } from '../../components/Pagination';
 import { SearchBar } from '../../components/SearchBar';
 import { BrandSelector } from '../../components/BrandSelector';
+import { PriceFilter } from '../../components/PriceFilter';
 
 //* Display search bar, filters, item cards list
 export function MainPage() {
@@ -67,6 +68,16 @@ export function MainPage() {
         setLoading(false);
     }
 
+    async function FilterByPrice(priceValue: number) {
+        setLoading(true);
+        const res = await GetFilteredIds({
+            price: priceValue,
+        });
+        const items = await GetItems(res);
+        setStoreItems(items);
+        setLoading(false);
+    }
+
     async function FilterByBrand(brandsValue: string | null) {
         setLoading(true);
         let res = [];
@@ -87,7 +98,10 @@ export function MainPage() {
             <SearchBar onSearch={FilterByProduct} />
 
             <div className={styles.container}>
-                <BrandSelector brands={brands} onSelect={FilterByBrand} />
+                <aside className={styles.filter}>
+                    <BrandSelector brands={brands} onSelect={FilterByBrand} />
+                    <PriceFilter onFilter={FilterByPrice} />
+                </aside>
 
                 <div className={styles.content}>
                     <Pagination
