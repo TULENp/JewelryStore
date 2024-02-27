@@ -43,5 +43,6 @@ npm run dev
 - Автоматическая фильтрация дублей товаров по ID
 - Если API возвращает ошибку, ее идентификатор выводится в консоль и запрос повторяется
 
-![demo](https://github.com/TULENp/JewelryStore/assets/83094079/5bca3b49-398c-4f17-8a36-89aad4454328)
+![demo](https://github.com/TULENp/JewelryStore/assets/83094079/71ed5411-4405-4c2e-aa57-0c1d0730856f)
+
 
